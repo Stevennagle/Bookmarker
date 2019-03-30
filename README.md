@@ -1,2 +1,2 @@
 # Bookmarker
-Web Based Manual Local Bookmark Storage
+Web app that stores bookmarks manually to your local device.
