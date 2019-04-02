@@ -5,6 +5,11 @@ function saveBookmark(e) {
 	var siteName = document.getElementById('siteName').value;
 	var siteUrl = document.getElementById('siteUrl').value;
 	
+	if (!siteName||!siteUrl) {
+		alert('Please enter both pieces of data');
+		return false;
+	}
+
 	var bookmark = {
 		name: siteName,
 		url: siteUrl
@@ -27,7 +32,23 @@ function saveBookmark(e) {
 		bookmarks.push(bookmark);
 		localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
 	}
+	fetchBookmarks();
 	e.preventDefault();
+}
+
+function deleteBookmark(url){
+	//console.log(url);
+	var bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+
+	for (var i = 0; i<bookmarks.length; i++) {
+		if (bookmarks[i].url == url) {
+			bookmarks.splice(i,1);
+		}
+	}
+	//reset local storage after deletion
+	localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+	//Reload Bookmarks
+	fetchBookmarks();
 }
 
 function fetchBookmarks(){
@@ -41,6 +62,8 @@ function fetchBookmarks(){
 		var url = bookmarks[i].url;
 		bookmarksResults.innerHTML += '<div class="well">'+
 									   '<h3>'+name+
+									   ' <a class="btn btn-default" target="_blank" href="'+url+'">Visit</a> ' +
+									   ' <a onclick="deleteBookmark(\''+url+'\')" class="btn btn-danger" href="#">Delete</a>'+
 									   '</h3>'+
 									   '</div>';
 	}
